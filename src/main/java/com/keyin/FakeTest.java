@@ -27,6 +27,14 @@ public class FakeTest {
         for (int i = 0; i < numberOfAddresses; i++) {
             String fakeAddress = faker.address().fullAddress();
             System.out.println(fakeAddress);
-    }
+        }
+
+        System.out.println("How many fake company names do you want to generate?");
+        int numberOfCompanyNames = sc.nextInt();
+        for (int i = 0; i < numberOfCompanyNames; i++) {
+            String fakeCompanyName = faker.company().name();
+            System.out.println(fakeCompanyName);
+        }
+
 }
 }
