@@ -14,5 +14,19 @@ public class FakeTest {
             String fakeName = faker.name().fullName();
             System.out.println(fakeName);
         }
+
+        System.out.println("How many back to the future quotes do you want to generate?");
+        int numberOfQuotes = sc.nextInt();
+        for (int i = 0; i < numberOfQuotes; i++) {
+            String fakeQuote = faker.backToTheFuture().quote();
+            System.out.println(fakeQuote);
+        }
+
+        System.out.println("How many fake addresses do you want to generate?");
+        int numberOfAddresses = sc.nextInt();
+        for (int i = 0; i < numberOfAddresses; i++) {
+            String fakeAddress = faker.address().fullAddress();
+            System.out.println(fakeAddress);
     }
+}
 }
