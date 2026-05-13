@@ -1,5 +1,10 @@
 package com.keyin.campusfoodreview.restaurant;
 
+import com.keyin.campusfoodreview.review.Review;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Restaurant {
     // What does restaurant need?
     private Long id;
@@ -7,17 +12,21 @@ public class Restaurant {
     private String restaurantAddress;
     private String restaurantPhone;
 
+    private List<Review> reviews;
+
     public Restaurant(Long id, String restaurantName, String restaurantAddress, String restaurantPhone) {
         this.id = id;
         this.restaurantName = restaurantName;
         this.restaurantAddress = restaurantAddress;
         this.restaurantPhone = restaurantPhone;
+        reviews = new ArrayList<>();
     }
 
     public Restaurant(String restaurantName, String restaurantAddress, String restaurantPhone) {
         this.restaurantName = restaurantName;
         this.restaurantAddress = restaurantAddress;
         this.restaurantPhone = restaurantPhone;
+        reviews = new ArrayList<>();
     }
 
     public Restaurant() {
@@ -55,6 +64,10 @@ public class Restaurant {
         this.restaurantPhone = restaurantPhone;
     }
 
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Restaurant{");
@@ -62,9 +75,8 @@ public class Restaurant {
         sb.append(", restaurantName='").append(restaurantName).append('\'');
         sb.append(", restaurantAddress='").append(restaurantAddress).append('\'');
         sb.append(", restaurantPhone='").append(restaurantPhone).append('\'');
+        sb.append(", reviews=").append(reviews);
         sb.append('}');
         return sb.toString();
     }
-
-
 }
