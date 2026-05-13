@@ -18,6 +18,7 @@ public class RestaurantTest {
     void tearDown() {
         restaurant = null;
     }
+
     @Test
     void testRestaurantCreation() {
         Assertions.assertEquals("Pizza Place", restaurant.getRestaurantName());
