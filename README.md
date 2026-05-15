@@ -23,7 +23,7 @@ A RESTful backend API for a campus food review platform where students and staff
 
 ## Overview
 
-Campus Food Review gives students and staff a single place to find and evaluate the food options available on campus. Users can browse restaurants, post honest reviews with 1–5 star ratings, and filter results by cuisine type, name, or rating — all through a clean REST API built to be consumed by any frontend client (a React frontend is planned as a follow-up).
+Campus Food Review gives students and staff a single place to find and evaluate the food options available on or near campus. Users can browse restaurants, post honest reviews with 1–5 star ratings, and filter results by cuisine type, name, or rating — all through a clean REST API built to be consumed by any frontend client (a React frontend is planned as a follow-up).
 
 ---
 
