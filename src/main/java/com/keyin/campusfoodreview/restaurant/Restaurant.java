@@ -11,9 +11,10 @@ public class Restaurant {
     private String restaurantName;
     private String restaurantAddress;
     private String restaurantPhone;
-
     private List<Review> reviews;
 
+
+    // This is a constructor
     public Restaurant(Long id, String restaurantName, String restaurantAddress, String restaurantPhone) {
         this.id = id;
         this.restaurantName = restaurantName;
@@ -28,10 +29,10 @@ public class Restaurant {
         this.restaurantPhone = restaurantPhone;
         reviews = new ArrayList<>();
     }
-
+    // Empty Constructor
     public Restaurant() {
     }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -68,6 +69,8 @@ public class Restaurant {
         reviews.add(review);
     }
 
+
+    // To String
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Restaurant{");
