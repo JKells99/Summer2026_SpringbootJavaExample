@@ -1,5 +1,6 @@
 package com.keyin.campusfoodreview.restaurant;
 
+import com.keyin.campusfoodreview.review.Review;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,6 @@ public class RestaurantTest {
     void setUp() {
         restaurant = new Restaurant("Pizza Place", "123 Main St", "555-1234");
     }
-
     @AfterEach
     void tearDown() {
         restaurant = null;
@@ -35,5 +35,12 @@ public class RestaurantTest {
         Assertions.assertEquals("Burger Joint", restaurant.getRestaurantName());
         Assertions.assertEquals("456 Elm St", restaurant.getRestaurantAddress());
         Assertions.assertEquals("555-5678", restaurant.getRestaurantPhone());
+    }
+
+    @Test
+    void testAddingReviewToRestaurant(){
+        Review review = new Review("Great pizza!", 1L, 1L);
+        restaurant.addReview(review);
+        Assertions.assertEquals(1,restaurant.getReviews().size());
     }
 }

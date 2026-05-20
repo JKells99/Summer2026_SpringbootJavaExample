@@ -5,9 +5,7 @@
 Building a **Campus Food Review System** — starting with plain Java classes, then refactoring into Spring Boot.
 
 ---
-
 ## What We Did
-
 ### 1. Project Setup
 - Chose campus food reviews as the project theme (over concert venue staff)
 - Planned 3 core classes: `Campus`, `Restaurant`, `Review`
