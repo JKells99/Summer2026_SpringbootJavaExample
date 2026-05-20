@@ -39,7 +39,7 @@ public class RestaurantTest {
 
     @Test
     void testAddingReviewToRestaurant(){
-        Review review = new Review("Great pizza!", 1L, 1L);
+        Review review = new Review("Great pizza!", 1L);
         restaurant.addReview(review);
         Assertions.assertEquals(1,restaurant.getReviews().size());
     }

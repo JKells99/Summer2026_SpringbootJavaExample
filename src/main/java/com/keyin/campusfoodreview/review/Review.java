@@ -8,21 +8,18 @@ public class Review {
     private Long reviewId;
     private String reviewText;
     private LocalDateTime reviewDate;
-    private Long restaurantId;
     private Long userId;
 
-    public Review(Long reviewId, String reviewText, Long restaurantId, Long userId) {
+    public Review(Long reviewId, String reviewText, Long userId) {
         this.reviewId = reviewId;
         this.reviewText = reviewText;
         this.reviewDate = LocalDateTime.now();
-        this.restaurantId = restaurantId;
         this.userId = userId;
     }
 
-    public Review(String reviewText, Long restaurantId, Long userId) {
+    public Review(String reviewText, Long userId) {
         this.reviewText = reviewText;
         this.reviewDate = LocalDateTime.now();
-        this.restaurantId = restaurantId;
         this.userId = userId;
     }
 
@@ -53,14 +50,6 @@ public class Review {
         this.reviewDate = reviewDate;
     }
 
-    public Long getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(Long restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
     public Long getUserId() {
         return userId;
     }
@@ -75,7 +64,6 @@ public class Review {
         sb.append("reviewId=").append(reviewId);
         sb.append(", reviewText='").append(reviewText).append('\'');
         sb.append(", reviewDate=").append(reviewDate);
-        sb.append(", restaurantId=").append(restaurantId);
         sb.append(", userId=").append(userId);
         sb.append('}');
         return sb.toString();
