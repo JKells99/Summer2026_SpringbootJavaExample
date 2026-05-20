@@ -11,7 +11,7 @@ public class ReviewTest {
 
     @BeforeEach
     void setUp() {
-        review = new Review("Awesome Pizza!", 1L, 1L);
+        review = new Review("Awesome Pizza!", 1L);
     }
     @AfterEach
     void tearDown() {
@@ -25,18 +25,15 @@ public class ReviewTest {
     void testReviewCreation(){
         Assertions.assertEquals("Awesome Pizza!", review.getReviewText());
         Assertions.assertNotNull(review.getReviewDate());
-        Assertions.assertEquals(1L, review.getRestaurantId());
         Assertions.assertEquals(1L, review.getUserId());
     }
 
     @Test
     void testReviewSetters(){
         review.setReviewText("Great pizza!");
-        review.setRestaurantId(2L);
         review.setUserId(2L);
 
         Assertions.assertEquals("Great pizza!", review.getReviewText());
-        Assertions.assertEquals(2L, review.getRestaurantId());
         Assertions.assertEquals(2L, review.getUserId());
     }
 
