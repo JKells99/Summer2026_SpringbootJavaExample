@@ -65,6 +65,14 @@ public class Restaurant {
         this.restaurantPhone = restaurantPhone;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public void addReview(Review review) {
         reviews.add(review);
     }
