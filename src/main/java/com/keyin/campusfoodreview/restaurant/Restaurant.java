@@ -1,38 +1,32 @@
 package com.keyin.campusfoodreview.restaurant;
 
 import com.keyin.campusfoodreview.review.Review;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
 public class Restaurant {
-    // What does restaurant need?
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String restaurantName;
     private String restaurantAddress;
     private String restaurantPhone;
+
+    @OneToMany
     private List<Review> reviews;
 
-
-    // This is a constructor
-    public Restaurant(Long id, String restaurantName, String restaurantAddress, String restaurantPhone) {
-        this.id = id;
-        this.restaurantName = restaurantName;
-        this.restaurantAddress = restaurantAddress;
-        this.restaurantPhone = restaurantPhone;
-        reviews = new ArrayList<>();
+    public Restaurant() {
     }
 
     public Restaurant(String restaurantName, String restaurantAddress, String restaurantPhone) {
         this.restaurantName = restaurantName;
         this.restaurantAddress = restaurantAddress;
         this.restaurantPhone = restaurantPhone;
-        reviews = new ArrayList<>();
+        this.reviews = new ArrayList<>();
     }
-    // Empty Constructor
-    public Restaurant() {
-    }
-    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -71,23 +65,5 @@ public class Restaurant {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
-    }
-
-    public void addReview(Review review) {
-        reviews.add(review);
-    }
-
-
-    // To String
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Restaurant{");
-        sb.append("id=").append(id);
-        sb.append(", restaurantName='").append(restaurantName).append('\'');
-        sb.append(", restaurantAddress='").append(restaurantAddress).append('\'');
-        sb.append(", restaurantPhone='").append(restaurantPhone).append('\'');
-        sb.append(", reviews=").append(reviews);
-        sb.append('}');
-        return sb.toString();
     }
 }
