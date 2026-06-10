@@ -27,6 +27,13 @@ public class Campus {
         this.restaurants = new ArrayList<>();
     }
 
+    public Campus(Long campusId, String campusName, String campusAddress, List<Restaurant> restaurants) {
+        this.campusId = campusId;
+        this.campusName = campusName;
+        this.campusAddress = campusAddress;
+        this.restaurants = restaurants;
+    }
+
     public long getCampusId() {
         return campusId;
     }
