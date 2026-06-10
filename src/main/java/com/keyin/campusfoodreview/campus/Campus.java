@@ -34,11 +34,11 @@ public class Campus {
         this.restaurants = restaurants;
     }
 
-    public long getCampusId() {
+    public Long getCampusId() {
         return campusId;
     }
 
-    public void setCampusId(long campusId) {
+    public void setCampusId(Long campusId) {
         this.campusId = campusId;
     }
 
