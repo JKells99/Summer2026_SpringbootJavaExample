@@ -1,6 +1,6 @@
 # Campus Food Review — Spring Boot REST API
 
-A RESTful backend API for a campus food review platform where students and staff can discover on-campus restaurants, leave star-rated reviews, and search/filter dining options. Built with Java 21 and Spring Boot 3.x as both a course project and a portfolio piece.
+A RESTful backend API for a campus food review platform where students and staff can discover on-campus restaurants and leave reviews. Built with Java 25 and Spring Boot 4.x as both a course project and a portfolio piece.
 
 ---
 
@@ -9,21 +9,20 @@ A RESTful backend API for a campus food review platform where students and staff
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
-- [Features](#features)
+- [What's Built So Far](#whats-built-so-far)
 - [Data Models](#data-models)
-- [API Documentation](#api-documentation)
-- [Testing Strategy](#testing-strategy)
-- [Project Board](#project-board)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
 - [Getting Started](#getting-started)
-- [Running with Docker](#running-with-docker)
-- [CI/CD](#cicd)
-- [Users & Authentication](#users--authentication)
+- [What's Coming Next](#whats-coming-next)
 
 ---
 
 ## Overview
 
-Campus Food Review gives students and staff a single place to find and evaluate the food options available on or near campus. Users can browse restaurants, post honest reviews with 1–5 star ratings, and filter results by cuisine type, name, or rating — all through a clean REST API built to be consumed by any frontend client (a React frontend is planned as a follow-up).
+Campus Food Review gives students and staff a single place to find and evaluate food options available on or near campus. Users will be able to browse restaurants tied to a specific campus, post reviews, and filter results. The backend is a REST API built to be consumed by any frontend client — a React frontend is planned as a follow-up.
+
+This is an actively in-progress project. The Campus domain is fully wired up and working. Restaurant and Review models exist but their full service/controller/repository layers are still being built out.
 
 ---
 
@@ -31,162 +30,167 @@ Campus Food Review gives students and staff a single place to find and evaluate 
 
 | Layer | Technology |
 |---|---|
-| Language | Java 21 |
-| Framework | Spring Boot 3.x |
+| Language | Java 25 |
+| Framework | Spring Boot 4.0.6 |
 | Data Access | Spring Data JPA + Hibernate |
-| Database | MySQL / MariaDB |
+| Database | MySQL |
 | Build Tool | Maven |
-| API Docs | Springdoc OpenAPI (Swagger UI) |
-| Containerization | Docker |
-| CI/CD | GitHub Actions |
-| Testing | JUnit 5, Spring Boot Test, Mockito |
+| API Docs | Springdoc OpenAPI (Swagger UI) 2.x |
+| Testing | JUnit 5, Mockito 5, Spring Boot Test |
 
 ---
 
 ## Architecture
 
-The project follows a classic **three-layer architecture**:
+This project uses a standard **three-layer architecture**. Every feature (Campus, Restaurant, Review) follows the same pattern — once you understand one, you understand them all.
 
 ```
 HTTP Request
      │
      ▼
 ┌─────────────────┐
-│   Controller    │  Handles HTTP, maps routes, delegates to service
+│   Controller    │  Receives the HTTP request, calls the service, returns a response
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│    Service      │  Business logic, validation, orchestration
+│    Service      │  All business logic lives here — this is where decisions are made
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│   Repository    │  Spring Data JPA — database interaction
+│   Repository    │  Talks to the database via Spring Data JPA (no SQL needed)
 └────────┬────────┘
          │
          ▼
-    MySQL / MariaDB
+      MySQL
 ```
 
 **Package structure:**
 
 ```
 com.keyin.campusfoodreview
+├── campus
+│   ├── Campus.java               ← JPA entity (maps to the campus table)
+│   ├── CampusController.java     ← REST endpoints
+│   ├── CampusService.java        ← Business logic
+│   └── CampusRepository.java     ← Database access (extends JpaRepository)
 ├── restaurant
-│   ├── Restaurant.java
-│   ├── RestaurantController.java
-│   ├── RestaurantService.java
-│   └── RestaurantRepository.java
+│   └── Restaurant.java           ← Entity defined, full layer coming soon
 ├── review
-│   ├── Review.java
-│   ├── ReviewController.java
-│   ├── ReviewService.java
-│   └── ReviewRepository.java
-└── RestaurantSystem.java
+│   └── Review.java               ← Entity defined, full layer coming soon
+└── RestaurantSystem.java         ← Spring Boot entry point (@SpringBootApplication)
 ```
+
+> **Why this structure?** Grouping by feature (campus, restaurant, review) instead of by layer (controllers, services, repositories) keeps related code together. When you're working on a feature, everything you need is in one folder.
 
 ---
 
-## Features
+## What's Built So Far
 
-### v1 Scope
+### Campus — fully implemented
 
-- **Restaurant Management** — Create, read, update, and delete campus restaurant listings
-- **Review Management** — Post, edit, and delete reviews tied to a specific restaurant
-- **Star Ratings** — Each review includes a 1–5 numeric rating
-- **Average Rating** — Each restaurant exposes a computed average from all its reviews
-- **Search & Filter** — Query restaurants by name, cuisine type, or minimum rating
-- **Swagger UI** — Interactive API documentation auto-generated at `/swagger-ui.html`
+- Full CRUD via REST endpoints
+- Seed endpoint to pre-populate sample campus data
+- Service and repository layers wired up with JPA
+- Unit tests for service layer (Mockito)
+- Controller tests with MockMvc
+
+### Restaurant — in progress
+
+- `Restaurant` entity defined with `@OneToMany` relationship to `Review`
+- Fields: `restaurantName`, `restaurantAddress`, `restaurantPhone`, `reviews`
+- Service/Controller/Repository layers not yet implemented
+
+### Review — in progress
+
+- `Review` entity defined with `reviewText` and `reviewDate` fields
+- Service/Controller/Repository layers not yet implemented
 
 ---
 
 ## Data Models
 
+### Campus
+
+| Field | Type | Notes |
+|---|---|---|
+| `campusId` | Long | Auto-generated primary key |
+| `campusName` | String | Display name (e.g. "Keyin College - St. John's") |
+| `campusAddress` | String | Street address |
+| `restaurants` | List\<Restaurant\> | One campus has many restaurants (`@OneToMany`) |
+
 ### Restaurant
 
-| Field | Type | Description |
+| Field | Type | Notes |
 |---|---|---|
 | `id` | Long | Auto-generated primary key |
-| `name` | String | Display name of the restaurant |
-| `cuisineType` | String | Category (e.g. Pizza, Subs, Asian) |
-| `hoursOfOperation` | String | Operating hours (e.g. "Mon–Fri 8am–4pm") |
-| `averageRating` | Double | Computed from all associated reviews |
-| `reviews` | List\<Review\> | One-to-many relationship |
+| `restaurantName` | String | Display name |
+| `restaurantAddress` | String | Street address |
+| `restaurantPhone` | String | Contact number |
+| `reviews` | List\<Review\> | One restaurant has many reviews (`@OneToMany`) |
 
 ### Review
 
-| Field | Type | Description |
+| Field | Type | Notes |
 |---|---|---|
-| `id` | Long | Auto-generated primary key |
-| `rating` | int | 1–5 star rating |
-| `comment` | String | Free-text written review |
-| `createdAt` | LocalDateTime | Timestamp of when the review was posted |
-| `reviewerName` | String | Name or identifier of the reviewer |
-| `restaurant` | Restaurant | Many-to-one relationship |
+| `reviewId` | Long | Auto-generated primary key |
+| `reviewText` | String | The written review |
+| `reviewDate` | LocalDateTime | Auto-set to the time the review was created |
 
 ---
 
-## API Documentation
+## API Endpoints
 
-Once the app is running, visit:
+All implemented endpoints are prefixed with `/api/campus`. Once the app is running, you can also explore them interactively via Swagger UI (see [Getting Started](#getting-started)).
 
-```
-http://localhost:8080/swagger-ui.html
-```
-
-Swagger UI provides an interactive interface to explore and test all available endpoints directly in the browser. The OpenAPI spec is also available at:
-
-```
-http://localhost:8080/v3/api-docs
-```
-
-### Planned Endpoints (summary)
+### Campus Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/restaurants` | Get all restaurants (supports filter params) |
-| `GET` | `/api/restaurants/{id}` | Get a single restaurant by ID |
-| `POST` | `/api/restaurants` | Create a new restaurant |
-| `PUT` | `/api/restaurants/{id}` | Update a restaurant |
-| `DELETE` | `/api/restaurants/{id}` | Delete a restaurant |
-| `GET` | `/api/restaurants/{id}/reviews` | Get all reviews for a restaurant |
-| `POST` | `/api/restaurants/{id}/reviews` | Post a review on a restaurant |
-| `PUT` | `/api/reviews/{id}` | Update a review |
-| `DELETE` | `/api/reviews/{id}` | Delete a review |
+| `GET` | `/api/campus/getAllCampuses` | Returns a list of all campuses |
+| `GET` | `/api/campus/getCampusById/{id}` | Returns a single campus by its ID |
+| `POST` | `/api/campus/add` | Creates a new campus (send JSON body) |
+| `POST` | `/api/campus/seed` | Seeds the database with 5 sample Keyin campuses |
+| `DELETE` | `/api/campus/delete/{id}` | Deletes a campus by ID |
+
+**Example — add a campus:**
+
+```bash
+curl -X POST http://localhost:8080/api/campus/add \
+  -H "Content-Type: application/json" \
+  -d '{"campusName": "Keyin College - St. John'\''s", "campusAddress": "45 Stavanger Dr, St. John'\''s, NL"}'
+```
+
+**Example — get all campuses:**
+
+```bash
+curl http://localhost:8080/api/campus/getAllCampuses
+```
 
 ---
 
-## Testing Strategy
+## Testing
 
-Tests live under `src/test/java` and follow the same package structure as the main source.
+Tests live under `src/test/java` and mirror the main package structure.
 
-| Type | Tool | What it covers |
+### What's covered
+
+| Test Class | Type | What it tests |
 |---|---|---|
-| Unit tests | JUnit 5 + Mockito | Service and repository logic in isolation — dependencies mocked |
-| Integration tests | Spring Boot Test | Full request-response cycles with a live Spring context and test database |
+| `CampusServiceTest` | Unit test | Service logic in isolation — repository is mocked with Mockito |
+| `CampusControllerTest` | Controller test | HTTP layer — uses `MockMvc` to simulate real requests without starting the server |
 
-Run all tests:
+### How to run tests
 
 ```bash
 mvn test
 ```
 
-Run only integration tests:
+### Why two types of tests?
 
-```bash
-mvn test -Dgroups=integration
-```
-
----
-
-## Project Board
-
-Features are tracked as individual cards on the GitHub project board. Each card represents a single deliverable feature (e.g. *"Add Review Endpoint"*, *"Implement restaurant search/filter"*). Cards move through:
-
-**Backlog → In Progress → In Review → Done**
-
-View the board: [GitHub Projects](../../projects)
+- **Service tests** (`@ExtendWith(MockitoExtension.class)`) — fast, no Spring context needed. You mock the repository and verify the service behaves correctly.
+- **Controller tests** (`@WebMvcTest`) — tests the HTTP layer. Spring loads only the web slice (no database), and you mock the service. This verifies your endpoints return the right status codes and JSON shapes.
 
 ---
 
@@ -194,9 +198,9 @@ View the board: [GitHub Projects](../../projects)
 
 ### Prerequisites
 
-- Java 21
+- Java 25
 - Maven 3.8+
-- MySQL or MariaDB running locally
+- MySQL running locally
 
 ### 1. Clone the repo
 
@@ -205,9 +209,17 @@ git clone https://github.com/JKells99/Summer2026_SpringbootJavaExample.git
 cd Summer2026_SpringbootJavaExample
 ```
 
-### 2. Configure the database
+### 2. Create the database
 
-Create a database and update `src/main/resources/application.properties`:
+Log into MySQL and run:
+
+```sql
+CREATE DATABASE campus_food_review;
+```
+
+### 3. Configure your credentials
+
+Open `src/main/resources/application.properties` and update:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/campus_food_review
@@ -216,7 +228,9 @@ spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-### 3. Build and run
+> `ddl-auto=update` means Hibernate will automatically create or update tables to match your entity classes. You don't need to write any SQL schema — just run the app and the tables appear.
+
+### 4. Build and run
 
 ```bash
 mvn spring-boot:run
@@ -224,45 +238,29 @@ mvn spring-boot:run
 
 The API will be available at `http://localhost:8080`.
 
----
+### 5. Explore the API with Swagger UI
 
-## Running with Docker
+Once the app is running, open your browser and go to:
 
-> Docker support coming soon.
-
-A `Dockerfile` and `docker-compose.yml` will be added to allow the app and database to be spun up together with a single command:
-
-```bash
-docker compose up
+```
+http://localhost:8080/swagger-ui.html
 ```
 
----
-
-## CI/CD
-
-This project uses **GitHub Actions** for continuous integration. On every push and pull request to `main`, the pipeline:
-
-1. Compiles the project with Maven
-2. Runs the full test suite
-3. Builds a Docker image
-4. (Deployment stage — to be configured)
-
-Pipeline config: [`.github/workflows/`](.github/workflows/)
+Swagger UI lists every endpoint, shows expected request/response shapes, and lets you make real requests directly from the browser — no Postman required.
 
 ---
 
-## Users & Authentication
+## What's Coming Next
 
-> Coming in a future release once Spring Security is integrated.
-
-A `User` model and authentication layer will be added to support:
-
-- User registration and login
-- JWT-based stateless authentication
-- Role-based access control (e.g. Admin vs. Student/Staff)
-- Associating reviews with authenticated user accounts
-
-This section will be updated with full details, endpoint specs, and setup instructions when the security layer is implemented.
+- [ ] Restaurant service, repository, and controller layers
+- [ ] Review service, repository, and controller layers
+- [ ] Link reviews to restaurants via endpoints
+- [ ] Star ratings (1–5) on reviews
+- [ ] Average rating computed per restaurant
+- [ ] Search and filter restaurants by name or rating
+- [ ] User model and Spring Security (JWT authentication)
+- [ ] Docker + docker-compose support
+- [ ] GitHub Actions CI pipeline
 
 ---
 
