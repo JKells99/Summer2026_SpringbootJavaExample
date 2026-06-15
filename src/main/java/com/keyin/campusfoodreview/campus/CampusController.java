@@ -40,10 +40,13 @@ public class CampusController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCampusById(@PathVariable long id) {
-
         campusService.deleteById(id);
-
         return new ResponseEntity<String>("Campus with id " + id + " has been deleted", HttpStatus.OK);
+    }
+
+    @PutMapping("{campusId}/addRestaurantToCampus/{restaurantId}")
+    public ResponseEntity<String> addRestaurantToCampus(@PathVariable Long campusId, @PathVariable Long restaurantId) {
+        return new ResponseEntity<String>(campusService.addRestaurantToCampus(campusId, restaurantId), HttpStatus.OK);
 
     }
 
