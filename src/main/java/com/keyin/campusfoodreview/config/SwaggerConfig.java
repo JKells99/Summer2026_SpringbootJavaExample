@@ -17,6 +17,6 @@ public class SwaggerConfig {
                         .version("0.1.0")
                         .description("REST API for managing campuses, restaurants, and food reviews.")
                         .contact(new Contact()
-                                .email("tryhardman83@gmail.com")));
+                                .email("jordan.kelloway@keyin.com")));
     }
 }

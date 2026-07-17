@@ -1,0 +1,9 @@
+services:
+  myapp-main:
+    image: jkells/reviewapp:latest
+    ports:
+      - 8080:8080
+    environment:
+      - spring.datasource.url=jdbc:mysql://summer-sb-2026.cjys2muqsiar.us-east-1.rds.amazonaws.com/winter2026
+      - spring.datasource.password=jordan1999$#
+      - spring.datasource.username=admin

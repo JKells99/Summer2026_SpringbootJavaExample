@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/restaurant")
+@RequestMapping("/api/restaurant")
 public class RestaurantController {
 
     @Autowired
@@ -32,8 +32,4 @@ public class RestaurantController {
         restaurantService.deleteRestaurantById(id);
         return ResponseEntity.ok("Restaurant with id " + id + " has been deleted");
     }
-
-
-
-
 }

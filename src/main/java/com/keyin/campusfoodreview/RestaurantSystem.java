@@ -10,6 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RestaurantSystem {
     public static void main(String[] args) {
         SpringApplication.run(RestaurantSystem.class, args);
-    }
 
+    }
 }

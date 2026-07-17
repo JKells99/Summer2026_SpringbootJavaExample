@@ -25,29 +25,22 @@ public class CampusController {
         return ResponseEntity.ok(campusService.getAllCampuses());
     }
 
-
     @GetMapping("/getCampusById/{id}")
     public ResponseEntity<Optional<Campus>> getCampusById(@PathVariable long id) {
         return new ResponseEntity<Optional<Campus>>(campusService.getCampusById(id), HttpStatus.OK);
-
     }
-
-
     @PostMapping("/seed")
     public ResponseEntity<List<Campus>> seedCampuses() {
         return new ResponseEntity<>(campusService.seedCampuses(), HttpStatus.CREATED);
     }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCampusById(@PathVariable long id) {
         campusService.deleteById(id);
         return new ResponseEntity<String>("Campus with id " + id + " has been deleted", HttpStatus.OK);
     }
-
-    @PutMapping("{campusId}/addRestaurantToCampus/{restaurantId}")
+    @PutMapping("/{campusId}/addRestaurantToCampus/{restaurantId}")
     public ResponseEntity<String> addRestaurantToCampus(@PathVariable Long campusId, @PathVariable Long restaurantId) {
         return new ResponseEntity<String>(campusService.addRestaurantToCampus(campusId, restaurantId), HttpStatus.OK);
-
     }
 
 
