@@ -1,5 +1,7 @@
 package com.keyin.campusfoodreview.campus;
 
+import com.keyin.campusfoodreview.campus.dto.CampusRequestDto;
+import com.keyin.campusfoodreview.campus.dto.CampusResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +18,31 @@ public class CampusController {
     CampusService campusService;
 
     @PostMapping("/add")
-    public Campus addCampus(@RequestBody Campus campus){
-        return campusService.saveCampus(campus);
+    public CampusResponseDto addCampus(@RequestBody CampusRequestDto campusRequestDto){
+        Campus campus = new Campus(campusRequestDto.campusName(), campusRequestDto.campusAddress());
+        return CampusResponseDto.from(campusService.saveCampus(campus));
     }
 
     @GetMapping("/getAllCampuses")
-    public ResponseEntity<List<Campus>> getAllCampuses() {
-        return ResponseEntity.ok(campusService.getAllCampuses());
+    public ResponseEntity<List<CampusResponseDto>> getAllCampuses() {
+        List<CampusResponseDto> campuses = campusService.getAllCampuses().stream()
+                .map(CampusResponseDto::from)
+                .toList();
+        return ResponseEntity.ok(campuses);
     }
 
     @GetMapping("/getCampusById/{id}")
-    public ResponseEntity<Optional<Campus>> getCampusById(@PathVariable long id) {
-        return new ResponseEntity<Optional<Campus>>(campusService.getCampusById(id), HttpStatus.OK);
+    public ResponseEntity<CampusResponseDto> getCampusById(@PathVariable long id) {
+        Optional<Campus> campus = campusService.getCampusById(id);
+        return campus.map(value -> ResponseEntity.ok(CampusResponseDto.from(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
     @PostMapping("/seed")
-    public ResponseEntity<List<Campus>> seedCampuses() {
-        return new ResponseEntity<>(campusService.seedCampuses(), HttpStatus.CREATED);
+    public ResponseEntity<List<CampusResponseDto>> seedCampuses() {
+        List<CampusResponseDto> campuses = campusService.seedCampuses().stream()
+                .map(CampusResponseDto::from)
+                .toList();
+        return new ResponseEntity<>(campuses, HttpStatus.CREATED);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCampusById(@PathVariable long id) {
@@ -42,9 +53,5 @@ public class CampusController {
     public ResponseEntity<String> addRestaurantToCampus(@PathVariable Long campusId, @PathVariable Long restaurantId) {
         return new ResponseEntity<String>(campusService.addRestaurantToCampus(campusId, restaurantId), HttpStatus.OK);
     }
-
-
-
-
 
 }

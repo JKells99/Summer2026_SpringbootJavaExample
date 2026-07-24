@@ -1,8 +1,9 @@
 package com.keyin.campusfoodreview.restaurant;
 
 
-import com.keyin.campusfoodreview.campus.Campus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class RestaurantService {
     public Restaurant saveRestaurant(Restaurant restaurant){
         return restaurantRepository.save(restaurant);
     }
-    public Iterable<Restaurant> getAllRestaurants(){
-        return restaurantRepository.findAll();
+    public Page<Restaurant> getAllRestaurants(Pageable pageable){
+        return restaurantRepository.findAll(pageable);
     }
     public Restaurant getRestaurantById(long id){
         return restaurantRepository.findById(id).get();
@@ -39,18 +40,3 @@ public class RestaurantService {
         return restaurantRepository.saveAll(restaurants);
 
 }}
-
-
-//    public List<Campus> seedCampuses() {
-//        List<Campus> campuses = List.of(
-//                new Campus("Keyin College - St. John's", "45 Stavanger Dr, St. John's, NL A1A 5E8"),
-//                new Campus("Keyin College - Corner Brook", "48 West St, Corner Brook, NL A2H 2Z2"),
-//                new Campus("Keyin College - Carbonear", "4 Robert Parsons Dr, Carbonear, NL A1Y 1B2"),
-//                new Campus("Keyin College - Grand Falls-Windsor", "7 Hardy Ave, Grand Falls-Windsor, NL A2A 1X3"),
-//                new Campus("Keyin College - Gander", "100 Trans-Canada Hwy, Gander, NL A1V 1P5")
-//        );
-//        return campusRepository.saveAll(campuses);
-//    }
-
-
-

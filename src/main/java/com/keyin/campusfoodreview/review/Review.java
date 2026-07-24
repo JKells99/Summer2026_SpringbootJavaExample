@@ -13,6 +13,8 @@ public class Review {
     private String reviewText;
     private LocalDateTime reviewDate;
 
+    @ManyToOne
+    private Restaurant restaurant;
 
     public Review() {
     }
@@ -20,6 +22,12 @@ public class Review {
     public Review(String reviewText) {
         this.reviewText = reviewText;
         this.reviewDate = LocalDateTime.now();
+    }
+
+    public Review(String reviewText, Restaurant restaurant) {
+        this.reviewText = reviewText;
+        this.reviewDate = LocalDateTime.now();
+        this.restaurant = restaurant;
     }
 
     public Long getReviewId() {
@@ -44,5 +52,13 @@ public class Review {
 
     public void setReviewDate(LocalDateTime reviewDate) {
         this.reviewDate = reviewDate;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }
