@@ -14,7 +14,7 @@ public class Restaurant {
     private String restaurantAddress;
     private String restaurantPhone;
 
-    @OneToMany
+    @OneToMany(mappedBy = "restaurant")
     private List<Review> reviews;
 
     public Restaurant() {

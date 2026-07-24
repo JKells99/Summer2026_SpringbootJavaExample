@@ -13,6 +13,9 @@ public class ReviewService {
     ReviewRepository reviewRepository;
 
     public Review saveReview(Review review) {
+        if (review.getRestaurant() == null) {
+            throw new IllegalArgumentException("Restaurant cannot be null");
+        }
         return reviewRepository.save(review);
     }
 
