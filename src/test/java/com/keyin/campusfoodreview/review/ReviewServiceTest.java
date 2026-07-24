@@ -1,5 +1,6 @@
 package com.keyin.campusfoodreview.review;
 
+import com.keyin.campusfoodreview.restaurant.Restaurant;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,7 @@ public class ReviewServiceTest {
 
     Review review;
     Review review2;
+    Restaurant restaurant;
     List<Review> reviews;
 
     @BeforeEach
@@ -30,6 +32,10 @@ public class ReviewServiceTest {
         review = new Review("Great food!");
         review2 = new Review("Would eat again.");
         reviews = List.of(review, review2);
+        restaurant = new Restaurant("Restaurant 1", "Address 1", "111-1111");
+        review.setRestaurant(restaurant);
+        review2.setRestaurant(restaurant);
+
     }
 
     @AfterEach
